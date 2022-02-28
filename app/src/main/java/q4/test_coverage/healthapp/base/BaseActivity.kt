@@ -9,7 +9,7 @@ import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 
 @KoinApiExtension
-open class BaseActivity(layout: Int) : AppCompatActivity(), KoinComponent {
+open class BaseActivity : AppCompatActivity(), KoinComponent {
 
     protected fun doInScope(
         state: Lifecycle.State = Lifecycle.State.STARTED,
@@ -20,9 +20,5 @@ open class BaseActivity(layout: Int) : AppCompatActivity(), KoinComponent {
                 action()
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 }

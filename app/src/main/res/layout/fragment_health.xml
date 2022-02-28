@@ -12,7 +12,6 @@
             android:layout_height="match_parent"
             android:background="@color/main_bg">
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/health_rv"
                 android:layout_width="match_parent"
@@ -25,7 +24,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/company_announcement_adding_fab"
+                android:id="@+id/health_adding_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -40,7 +39,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
-            android:id="@+id/includedBottomSheetLayoutCompanyServices"
+            android:id="@+id/includedBottomSheetLayout"
             layout="@layout/bottom_sheet_layout" />
 
         <include
