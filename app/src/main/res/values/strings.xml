@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">HealthApp</string>
+    <string name="bottom_sheet_service_name">Название услуги</string>
+</resources>
