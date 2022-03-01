@@ -7,13 +7,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import q4.test_coverage.healthapp.R
-import q4.test_coverage.healthapp.databinding.ItemRvBinding
+import q4.test_coverage.healthapp.databinding.ItemRvGreenBinding
+import q4.test_coverage.healthapp.databinding.ItemRvRedBinding
+import q4.test_coverage.healthapp.databinding.ItemRvYellowBinding
 import q4.test_coverage.healthapp.model.HealthData
 import q4.test_coverage.healthapp.utils.ItemTouchHelperAdapter
 import q4.test_coverage.healthapp.utils.ItemTouchHelperViewHolder
 
-class HealthAdapter : RecyclerView.Adapter<HealthAdapter.HealthAdapterViewHolder>(),
+class HealthAdapter : RecyclerView.Adapter<BaseViewHolder>(),
     ItemTouchHelperAdapter {
+
+    companion object {
+        private const val TYPE_ONE = 1
+        private const val TYPE_TWO = 2
+        private const val TYPE_THREE = 3
+        private const val TYPE_FOUR = 4
+    }
 
     private var allHealthList: MutableList<HealthData> = arrayListOf()
     private val fireStore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
@@ -21,16 +30,49 @@ class HealthAdapter : RecyclerView.Adapter<HealthAdapter.HealthAdapterViewHolder
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) = HealthAdapterViewHolder(
-        ItemRvBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent, false
-        )
-    )
+    ): BaseViewHolder {
+        return when (viewType) {
+            TYPE_ONE -> HealthAdapterViewHolder(
+                ItemRvGreenBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent, false
+                )
+            )
+            TYPE_TWO -> HealthAdapterViewHolderYellow(
+                ItemRvYellowBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent, false
+                )
+            )
+            TYPE_THREE -> HealthAdapterViewHolderRed(
+                ItemRvRedBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent, false
+                )
+            )
+
+            else -> HealthAdapterViewHolder(
+                ItemRvGreenBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent, false
+                )
+            )
+        }
+
+    }
 
     override fun getItemCount(): Int = allHealthList.size
 
-    override fun onBindViewHolder(holder: HealthAdapterViewHolder, position: Int) {
+    override fun getItemViewType(position: Int): Int {
+        return when {
+            allHealthList[position].pulse?.toInt()!! in 51..90 -> TYPE_ONE
+            allHealthList[position].pulse?.toInt()!! in 91..120 -> TYPE_TWO
+            allHealthList[position].pulse?.toInt()!! > 120 -> TYPE_THREE
+            else -> TYPE_FOUR
+        }
+    }
+
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         holder.bind(allHealthList[position])
     }
 
@@ -46,11 +88,56 @@ class HealthAdapter : RecyclerView.Adapter<HealthAdapter.HealthAdapterViewHolder
     }
 
     inner class HealthAdapterViewHolder(
-        private val vb: ItemRvBinding
+        private val vb: ItemRvGreenBinding
     ) :
-        RecyclerView.ViewHolder(vb.root), ItemTouchHelperViewHolder {
+        BaseViewHolder(vb.root), ItemTouchHelperViewHolder {
 
-        fun bind(data: HealthData) = with(vb) {
+        @SuppressLint("ResourceAsColor")
+        override fun bind(data: HealthData) = with(vb) {
+            vb.timeTw.text = data.date
+            vb.pressureFirst.text = data.pressure_first
+            vb.pressureSecond.text = data.pressure_second
+            vb.pulseTw.text = data.pulse
+        }
+
+        override fun onItemSelected() {
+            itemView.setBackgroundResource(R.drawable.item_recycler_background_when_removing)
+        }
+
+        override fun onItemClear() {
+            itemView.setBackgroundResource(R.drawable.item_recycler_background)
+        }
+    }
+
+    inner class HealthAdapterViewHolderYellow(
+        private val vb: ItemRvYellowBinding
+    ) :
+        BaseViewHolder(vb.root), ItemTouchHelperViewHolder {
+
+        @SuppressLint("ResourceAsColor")
+        override fun bind(data: HealthData) = with(vb) {
+            vb.timeTw.text = data.date
+            vb.pressureFirst.text = data.pressure_first
+            vb.pressureSecond.text = data.pressure_second
+            vb.pulseTw.text = data.pulse
+        }
+
+        override fun onItemSelected() {
+            itemView.setBackgroundResource(R.drawable.item_recycler_background_when_removing)
+        }
+
+        override fun onItemClear() {
+            itemView.setBackgroundResource(R.drawable.item_recycler_background)
+        }
+    }
+
+    inner class HealthAdapterViewHolderRed(
+        private val vb: ItemRvRedBinding
+    ) :
+        BaseViewHolder(vb.root), ItemTouchHelperViewHolder {
+
+        @SuppressLint("ResourceAsColor")
+        override fun bind(data: HealthData) = with(vb) {
             vb.timeTw.text = data.date
             vb.pressureFirst.text = data.pressure_first
             vb.pressureSecond.text = data.pressure_second

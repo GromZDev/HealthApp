@@ -5,7 +5,7 @@
     style="@style/MyRecyclerItem"
     android:id="@+id/item_day_background"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="80dp">
 
     <TextView
         android:id="@+id/time_tw"
@@ -17,52 +17,69 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="22:06" />
+        tools:text="14:22" />
+
+    <TextView
+        android:id="@+id/pressure_main_tw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Давление"
+        android:textColor="@color/rv_time_color"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/pressure_first"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/pressure_second" />
 
     <TextView
         android:id="@+id/pressure_first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginBottom="8dp"
         android:textColor="@color/rv_text_color"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/time_tw"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pressure_main_tw"
         app:layout_constraintEnd_toStartOf="@+id/separator_tw"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="150" />
+        tools:text="120" />
 
     <TextView
         android:id="@+id/separator_tw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginBottom="8dp"
         android:textColor="@color/rv_text_color"
         android:textSize="30sp"
         android:text="@string/separator"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/pressure_first"
         app:layout_constraintEnd_toStartOf="@+id/pressure_second"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/pressure_main_tw" />
 
     <TextView
         android:id="@+id/pressure_second"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-       android:layout_marginEnd="30dp"
+        android:layout_marginEnd="30dp"
         android:textColor="@color/rv_text_color"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/separator_tw"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pressure_main_tw"
         app:layout_constraintEnd_toStartOf="@+id/heart"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="150" />
+        tools:text="130" />
+
+    <TextView
+        android:id="@+id/pulse_main_tw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Пульс"
+        android:textColor="@color/rv_time_color"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/heart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/pulse_tw" />
 
     <ImageView
         android:id="@+id/heart"
@@ -73,7 +90,7 @@
         android:src="@drawable/ic_heart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/pulse_tw"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pulse_main_tw"
         app:tint="@color/heart_color" />
 
     <TextView
@@ -84,8 +101,18 @@
         android:textSize="30sp"
         android:textColor="@color/rv_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/item_right_color"
+        app:layout_constraintTop_toBottomOf="@+id/pulse_main_tw"
+        tools:text="67" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/item_right_color"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/item_right_side_green"
+        android:contentDescription="@string/side_color"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="53" />
+        app:layout_constraintVertical_bias="0.0"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

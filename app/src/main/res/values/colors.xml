@@ -25,5 +25,7 @@
     <color name="rv_time_color">#2B9DDA</color>
     <color name="heart_color">#F30227</color>
     <color name="recycler_remove_bg">#454343</color>
-
+    <color name="item_green_bg">#87E627</color>
+    <color name="item_yellow_bg">#F6E01A</color>
+    <color name="item_red_bg">#F30227</color>
 </resources>

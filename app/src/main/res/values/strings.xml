@@ -4,4 +4,6 @@
     <string name="separator">/</string>
     <string name="enter_pulse">Введите ваш пульс</string>
     <string name="add">Добавить</string>
+    <string name="side_color">Полоса</string>
+    <string name="add_data">Добавить данные</string>
 </resources>
