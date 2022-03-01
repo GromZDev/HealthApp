@@ -8,4 +8,6 @@
     <string name="add_data">Добавить данные</string>
     <string name="your_pulse">Пульс</string>
     <string name="your_pressure">Давление</string>
+    <string name="sep_text">на</string>
+    <string name="enter_pressure">Введите ваше давление</string>
 </resources>

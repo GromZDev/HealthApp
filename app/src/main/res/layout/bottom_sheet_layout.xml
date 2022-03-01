@@ -26,6 +26,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/pressure_main_tw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_pressure"
+                android:textColor="@color/rv_time_color"
+                android:textSize="24sp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_line"
+                app:layout_constraintEnd_toEndOf="parent" />
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/pressure_one_it"
                 android:layout_width="120dp"
@@ -34,27 +46,38 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/main_button_background"
                 android:gravity="center"
-                android:hint="Введите давление №1"
                 android:inputType="number"
+                android:maxLength="3"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:textAllCaps="false"
                 android:textColor="@color/reg_form_color"
                 android:textColorHint="@color/hint_text_color"
-                app:layout_constraintEnd_toStartOf="@id/pressure_two_it"
+                app:layout_constraintEnd_toStartOf="@+id/middle_tw"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_line" />
+                app:layout_constraintTop_toBottomOf="@+id/pressure_main_tw" />
+
+            <TextView
+                android:id="@+id/middle_tw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sep_text"
+                android:textColor="@color/rv_time_color"
+                android:textSize="24sp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toEndOf="@+id/pressure_one_it"
+                app:layout_constraintTop_toTopOf="@+id/pressure_one_it"
+                app:layout_constraintEnd_toStartOf="@+id/pressure_two_it" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/pressure_two_it"
                 android:layout_width="120dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="24dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/main_button_background"
                 android:gravity="center"
-                android:hint="Введите давление №2"
+                android:maxLength="3"
                 android:inputType="number"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
@@ -62,33 +85,31 @@
                 android:textColor="@color/reg_form_color"
                 android:textColorHint="@color/hint_text_color"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/pressure_one_it"
-                app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_line" />
+                app:layout_constraintStart_toEndOf="@+id/middle_tw"
+                app:layout_constraintTop_toBottomOf="@+id/pressure_main_tw" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/pulse_it"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="24dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="24dp"
                 android:background="@drawable/main_button_background"
                 android:gravity="center"
                 android:hint="@string/enter_pulse"
                 android:inputType="number"
-                android:maxLength="16"
+                android:maxLength="3"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:textAllCaps="false"
                 android:textColor="@color/reg_form_color"
                 android:textColorHint="@color/hint_text_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/pressure_two_it"
+                app:layout_constraintStart_toStartOf="@+id/pressure_one_it"
                 app:layout_constraintTop_toBottomOf="@+id/pressure_one_it" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/add_button"
-                android:layout_width="325dp"
+                android:layout_width="0dp"
                 android:layout_height="52dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/login_button_background"
@@ -96,8 +117,8 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/pressure_two_it"
+                app:layout_constraintStart_toStartOf="@+id/pressure_one_it"
                 app:layout_constraintTop_toBottomOf="@+id/pulse_it" />
 
             <TextView
