@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import q4.test_coverage.healthapp.R
 import q4.test_coverage.healthapp.databinding.ItemRvGreenBinding
+import q4.test_coverage.healthapp.databinding.ItemRvHeaderBinding
 import q4.test_coverage.healthapp.databinding.ItemRvRedBinding
 import q4.test_coverage.healthapp.databinding.ItemRvYellowBinding
 import q4.test_coverage.healthapp.model.HealthData
@@ -50,7 +51,12 @@ class HealthAdapter : RecyclerView.Adapter<BaseViewHolder>(),
                     parent, false
                 )
             )
-
+            TYPE_FOUR -> HealthAdapterViewHolderHeader(
+                ItemRvHeaderBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent, false
+                )
+            )
             else -> HealthAdapterViewHolder(
                 ItemRvGreenBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -65,10 +71,12 @@ class HealthAdapter : RecyclerView.Adapter<BaseViewHolder>(),
 
     override fun getItemViewType(position: Int): Int {
         return when {
+            allHealthList[position].type == HealthData.HEADER.HEADER -> TYPE_FOUR
             allHealthList[position].pulse?.toInt()!! in 51..90 -> TYPE_ONE
             allHealthList[position].pulse?.toInt()!! in 91..120 -> TYPE_TWO
             allHealthList[position].pulse?.toInt()!! > 120 -> TYPE_THREE
-            else -> TYPE_FOUR
+            allHealthList[position].pulse?.toInt()!! in 0..50 -> TYPE_THREE
+            else -> TYPE_ONE
         }
     }
 
@@ -92,9 +100,8 @@ class HealthAdapter : RecyclerView.Adapter<BaseViewHolder>(),
     ) :
         BaseViewHolder(vb.root), ItemTouchHelperViewHolder {
 
-        @SuppressLint("ResourceAsColor")
         override fun bind(data: HealthData) = with(vb) {
-            vb.timeTw.text = data.date
+            vb.timeTw.text = data.time
             vb.pressureFirst.text = data.pressure_first
             vb.pressureSecond.text = data.pressure_second
             vb.pulseTw.text = data.pulse
@@ -114,9 +121,8 @@ class HealthAdapter : RecyclerView.Adapter<BaseViewHolder>(),
     ) :
         BaseViewHolder(vb.root), ItemTouchHelperViewHolder {
 
-        @SuppressLint("ResourceAsColor")
         override fun bind(data: HealthData) = with(vb) {
-            vb.timeTw.text = data.date
+            vb.timeTw.text = data.time
             vb.pressureFirst.text = data.pressure_first
             vb.pressureSecond.text = data.pressure_second
             vb.pulseTw.text = data.pulse
@@ -136,9 +142,8 @@ class HealthAdapter : RecyclerView.Adapter<BaseViewHolder>(),
     ) :
         BaseViewHolder(vb.root), ItemTouchHelperViewHolder {
 
-        @SuppressLint("ResourceAsColor")
         override fun bind(data: HealthData) = with(vb) {
-            vb.timeTw.text = data.date
+            vb.timeTw.text = data.time
             vb.pressureFirst.text = data.pressure_first
             vb.pressureSecond.text = data.pressure_second
             vb.pulseTw.text = data.pulse
@@ -150,6 +155,24 @@ class HealthAdapter : RecyclerView.Adapter<BaseViewHolder>(),
 
         override fun onItemClear() {
             itemView.setBackgroundResource(R.drawable.item_recycler_background)
+        }
+    }
+
+    inner class HealthAdapterViewHolderHeader(
+        private val vb: ItemRvHeaderBinding
+    ) :
+        BaseViewHolder(vb.root), ItemTouchHelperViewHolder {
+
+        override fun bind(data: HealthData) {
+            vb.dateTw.text = data.date
+        }
+
+        override fun onItemSelected() {
+
+        }
+
+        override fun onItemClear() {
+
         }
     }
 

@@ -15,8 +15,11 @@ import q4.test_coverage.healthapp.base.BaseFragment
 import q4.test_coverage.healthapp.databinding.FragmentHealthBinding
 import q4.test_coverage.healthapp.model.HealthData
 import q4.test_coverage.healthapp.utils.ItemTouchHelperCallback
+import q4.test_coverage.healthapp.utils.SharedPreferencesHelper
 import q4.test_coverage.healthapp.utils.showToast
 import q4.test_coverage.healthapp.viewModel.HealthViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 @InternalCoroutinesApi
 @KoinApiExtension
@@ -72,6 +75,7 @@ class HealthFragment(override val layoutId: Int = R.layout.fragment_health) :
         }
 
         getHealthDataFromDB()
+        setHeader()
     }
 
 
@@ -183,5 +187,21 @@ class HealthFragment(override val layoutId: Int = R.layout.fragment_health) :
                 }
             }
         }
+    }
+
+    /** Проверка для вставки Даты в ресайклере */
+    private fun setHeader() {
+        val preferences = SharedPreferencesHelper(requireContext())
+        if (preferences.isFirstOpen || preferences.currentDate != getCurrentDate()) {
+            viewModel.createNodeForDate()
+            preferences.isFirstOpen = false
+            preferences.currentDate = getCurrentDate()
+        }
+    }
+
+    private fun getCurrentDate(): String {
+        val time = Date()
+        val timeFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        return timeFormat.format(time)
     }
 }

@@ -15,5 +15,11 @@ data class HealthData(
     var time: String? = "",
     var pressure_first: String? = "",
     var pressure_second: String? = "",
-    var pulse: String? = ""
-): Parcelable
+    var pulse: String? = "",
+    val type: HEADER? = null
+): Parcelable {
+
+    enum class HEADER {
+        HEADER
+    }
+}

@@ -25,7 +25,6 @@ class HealthViewModel(
     app: Application,
     private var fireStore: FirebaseFirestore
 ) : BaseViewModel(app) {
-    private val newHealthData: MutableStateFlow<UserData?> = MutableStateFlow(null)
     val newRequest: MutableStateFlow<List<HealthData>?> = MutableStateFlow(null)
     val receivingData: MutableStateFlow<List<HealthData>?> = MutableStateFlow(null)
     val isStateException = MutableStateFlow("")
@@ -47,10 +46,10 @@ class HealthViewModel(
                     pressure_first = pressureFirst,
                     pressure_second = pressureSecond,
                     pulse = pulse,
-                    date = date
+                    date = date,
+                    time = getCurrentTime()
                 )
                 CommonConstants.HEALTH_DATA?.healthDataList = listOf(request)
-                //  createNode()
                 updateDataToDB(request, healthAdapter)
                 delay(1000)
             } catch (exception: TimeoutCancellationException) {
@@ -64,20 +63,18 @@ class HealthViewModel(
         }
     }
 
-    private fun createNode() {
+    fun createNodeForDate() {
         modelScope.launch {
-            val data = UserData(
-                uid = "myUid",
-                healthDataList = null
+            val user = HealthData(
+                date = getCurrentDate(),
+                type = HealthData.HEADER.HEADER
             )
             val collection = fireStore.collection("health_data")
             val document = collection.document("myUid")
             document
-                .set(
-                    data
-                )
-                .addOnSuccessListener { newHealthData.value = data }
-                .addOnFailureListener { newHealthData.value = null }
+                .update("healthDataList", FieldValue.arrayUnion(user))
+                .addOnSuccessListener { }
+                .addOnFailureListener { }
                 .await()
         }
     }
@@ -141,5 +138,18 @@ class HealthViewModel(
                 }
                 .await()
         }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun getCurrentTime(): String {
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("HH:mm")
+        return dateFormat.format(calendar.time)
+    }
+
+    private fun getCurrentDate(): String {
+        val time = Date()
+        val timeFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        return timeFormat.format(time)
     }
 }
