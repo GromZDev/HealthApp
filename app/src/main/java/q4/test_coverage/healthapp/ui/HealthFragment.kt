@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinApiExtension
@@ -162,6 +163,7 @@ class HealthFragment(override val layoutId: Int = R.layout.fragment_health) :
     private fun getListData() {
         doInScope {
             viewModel.receivingData.collect {
+                delay(1000)
                 if (it != null) {
                     binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
                 } else if (it == null && receivingDataFromDB.isNotEmpty()) {

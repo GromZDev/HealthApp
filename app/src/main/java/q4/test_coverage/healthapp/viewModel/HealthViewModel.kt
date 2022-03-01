@@ -107,7 +107,6 @@ class HealthViewModel(
             try {
                 if (uid.isNotEmpty()) {
                     eventChangeListener(uid, adapter)
-                    delay(1000)
                 }
             } catch (exception: TimeoutCancellationException) {
                 isStateException2.value = "1 - " + exception.message

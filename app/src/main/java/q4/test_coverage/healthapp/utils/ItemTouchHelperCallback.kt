@@ -19,7 +19,11 @@ open class ItemTouchHelperCallback (private val adapter: HealthAdapter) :
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ): Int {
-        val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+        var swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+        val a = viewHolder.itemViewType
+        if (a == 4) {
+            swipeFlags = 1
+        }
         return makeMovementFlags(
             0,
             swipeFlags
