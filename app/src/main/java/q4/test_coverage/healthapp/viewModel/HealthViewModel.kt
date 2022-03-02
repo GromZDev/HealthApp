@@ -2,7 +2,6 @@ package q4.test_coverage.healthapp.viewModel
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -10,10 +9,15 @@ import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import org.koin.core.component.KoinApiExtension
 import q4.test_coverage.healthapp.base.BaseViewModel
 import q4.test_coverage.healthapp.model.HealthData
+import q4.test_coverage.healthapp.model.UserData
+import q4.test_coverage.healthapp.ui.HealthAdapter
+import q4.test_coverage.healthapp.utils.CommonConstants
 import java.text.SimpleDateFormat
+
 import java.util.*
 
 @KoinApiExtension
@@ -22,108 +26,129 @@ class HealthViewModel(
     private var fireStore: FirebaseFirestore
 ) : BaseViewModel(app) {
     val newRequest: MutableStateFlow<List<HealthData>?> = MutableStateFlow(null)
-    val servicePersonalRequest: MutableStateFlow<List<HealthData>?> =
-        MutableStateFlow(null)
+    val receivingData: MutableStateFlow<List<HealthData>?> = MutableStateFlow(null)
     val isStateException = MutableStateFlow("")
-    private val isStateException2 = MutableStateFlow("")
+    val isStateException2 = MutableStateFlow("")
 
-//    @SuppressLint("SimpleDateFormat")
-//    fun updateProfileUser(
-//        serviceTheme: String,
-//        serviceOverview: String,
-//        servicePrice: String,
-//        adapter: RequestPersonalServicesAdapter
-//    ) {
-//        modelScope.launch {
-//            try {
-//                val calendar = Calendar.getInstance()
-//                val dateFormat = SimpleDateFormat("dd-MM-yyyy")
-//                val date = dateFormat.format(calendar.time)
-//                val request = HealthData(
-//                    serviceTheme,
-//                    serviceOverview,
-//                    servicePrice,
-//                    date
-//                )
-//                CommonConstants.USER?.personalServices = listOf(request)
-//
-//                updateUserProfileRequests(adapter)
-//                delay(1000)
-//            } catch (exception: TimeoutCancellationException) {
-//                isStateException.value = "1 - " + exception.message
-//                newRequest.value = null
-//
-//            } catch (exception: Exception) {
-//                isStateException.value = "2 - " + exception.message
-//                newRequest.value = null
-//            }
-//        }
-//    }
-//
-//    private fun updateUserProfileRequests(adapter: RequestPersonalServicesAdapter) {
-//        modelScope.launch {
-//            val user = HealthData(
-//                uid = CommonConstants.USER?.uid.toString(),
-//                personalServices = CommonConstants.USER?.personalServices
-//            )
-//
-//            val service = user.personalServices?.get(0)?.let {
-//                HealthData(
-//                    user.personalServices!![0].theme, user.personalServices!![0].overview,
-//                    user.personalServices!![0].price
-//                )
-//            }
-//            Log.d("RequestServicesFragment", user.toString())
-//            val collection = fireStore.collection("users")
-//            val document = collection.document(user.uid)
-//            document
-//                .update("personalServices", FieldValue.arrayUnion(service))
-//                .addOnSuccessListener {
-//                    newRequest.value = user.personalServices
-//                    if (service != null) {
-//                        adapter.appendItem(service)
-//                    }
-//                }
-//                .addOnFailureListener { newRequest.value = null }
-//                .await()
-//        }
-//    }
-//
-//    fun getUserServiceRequests(uid: String, adapter: RequestPersonalServicesAdapter) {
-//        modelScope.launch {
-//            try {
-//                if (uid.isNotEmpty()) {
-//                    eventChangeListener(uid, adapter)
-//                    delay(1000)
-//                }
-//            } catch (exception: TimeoutCancellationException) {
-//                isStateException2.value = "1 - " + exception.message
-//                servicePersonalRequest.value = null
-//
-//            } catch (exception: Exception) {
-//                isStateException2.value = "2 - " + exception.message
-//                servicePersonalRequest.value = null
-//            }
-//        }
-//    }
-//
-//    private fun eventChangeListener(currentUser: String, adapter: RequestPersonalServicesAdapter) {
-//        modelScope.launch {
-//            fireStore = FirebaseFirestore.getInstance()
-//            fireStore.collection("users").document(currentUser)
-//                .get()
-//                .addOnSuccessListener { link ->
-//                    val user = link.toObject<HealthData>()
-//                    if (user?.personalServices !== null) {
-//                        servicePersonalRequest.value = user?.personalServices!!
-//                        adapter.setAllRequests(user.personalServices!! as MutableList<PersonalServicesRequests>)
-//                    }
-//
-//                }
-//                .addOnFailureListener {
-//                    servicePersonalRequest.value = null
-//                }
-//                .await()
-//        }
-//    }
+    @SuppressLint("SimpleDateFormat")
+    fun updateHealthData(
+        pressureFirst: String,
+        pressureSecond: String,
+        pulse: String,
+        healthAdapter: HealthAdapter
+    ) {
+        modelScope.launch {
+            try {
+                val calendar = Calendar.getInstance()
+                val dateFormat = SimpleDateFormat("dd-MM-yyyy")
+                val date = dateFormat.format(calendar.time)
+                val request = HealthData(
+                    pressure_first = pressureFirst,
+                    pressure_second = pressureSecond,
+                    pulse = pulse,
+                    date = date,
+                    time = getCurrentTime()
+                )
+                CommonConstants.HEALTH_DATA?.healthDataList = listOf(request)
+                updateDataToDB(request, healthAdapter)
+                delay(1000)
+            } catch (exception: TimeoutCancellationException) {
+                isStateException.value = "1 - " + exception.message
+                newRequest.value = null
+
+            } catch (exception: Exception) {
+                isStateException.value = "2 - " + exception.message
+                newRequest.value = null
+            }
+        }
+    }
+
+    fun createNodeForDate() {
+        modelScope.launch {
+            val user = HealthData(
+                date = getCurrentDate(),
+                type = HealthData.HEADER.HEADER
+            )
+            val collection = fireStore.collection("health_data")
+            val document = collection.document("myUid")
+            document
+                .update("healthDataList", FieldValue.arrayUnion(user))
+                .addOnSuccessListener { }
+                .addOnFailureListener { }
+                .await()
+        }
+    }
+
+    private fun updateDataToDB(request: HealthData, adapter: HealthAdapter) {
+        modelScope.launch {
+            val user = HealthData(
+                request.date,
+                request.time,
+                request.pressure_first,
+                request.pressure_second,
+                request.pulse
+            )
+
+            val collection = fireStore.collection("health_data")
+            val document = collection.document("myUid")
+            document
+                .update("healthDataList", FieldValue.arrayUnion(user))
+                .addOnSuccessListener {
+                    newRequest.value = listOf(user)
+                    user.let { it1 -> adapter.appendItem(it1) }
+                }
+                .addOnFailureListener { newRequest.value = null }
+                .await()
+        }
+    }
+
+    fun getData(uid: String, adapter: HealthAdapter) {
+        modelScope.launch {
+            try {
+                if (uid.isNotEmpty()) {
+                    eventChangeListener(uid, adapter)
+                }
+            } catch (exception: TimeoutCancellationException) {
+                isStateException2.value = "1 - " + exception.message
+                receivingData.value = null
+
+            } catch (exception: Exception) {
+                isStateException2.value = "2 - " + exception.message
+                receivingData.value = null
+            }
+        }
+    }
+
+    private fun eventChangeListener(currentUser: String, adapter: HealthAdapter) {
+        modelScope.launch {
+            fireStore = FirebaseFirestore.getInstance()
+            fireStore.collection("health_data").document(currentUser)
+                .get()
+                .addOnSuccessListener { link ->
+                    val healthList = link.toObject<UserData>()
+                    if (healthList?.healthDataList !== null) {
+                        receivingData.value = healthList.healthDataList
+                        adapter.setAllHealthData(healthList.healthDataList as MutableList<HealthData>)
+                    }
+
+                }
+                .addOnFailureListener {
+                    receivingData.value = null
+                }
+                .await()
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun getCurrentTime(): String {
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("HH:mm")
+        return dateFormat.format(calendar.time)
+    }
+
+    private fun getCurrentDate(): String {
+        val time = Date()
+        val timeFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        return timeFormat.format(time)
+    }
 }

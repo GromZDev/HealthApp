@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">HealthApp</string>
-    <string name="bottom_sheet_service_name">Название услуги</string>
+    <string name="heart">Heart</string>
+    <string name="separator">/</string>
+    <string name="enter_pulse">Введите ваш пульс</string>
+    <string name="add">Добавить</string>
+    <string name="side_color">Полоса</string>
+    <string name="add_data">Добавить данные</string>
+    <string name="your_pulse">Пульс</string>
+    <string name="your_pressure">Давление</string>
+    <string name="sep_text">на</string>
+    <string name="enter_pressure">Введите ваше давление</string>
 </resources>

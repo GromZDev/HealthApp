@@ -1,0 +1,11 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_enabled="true">
+        <shape android:shape="rectangle">
+            <corners android:bottomRightRadius="16dp"
+                android:topRightRadius="16dp"/>
+            <solid android:color="@color/item_green_bg" />
+        </shape>
+    </item>
+
+</selector>

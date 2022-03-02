@@ -12,7 +12,6 @@
             android:layout_height="match_parent"
             android:background="@color/main_bg">
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/health_rv"
                 android:layout_width="match_parent"
@@ -25,22 +24,24 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/company_announcement_adding_fab"
+                android:id="@+id/health_adding_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="24dp"
-                android:src="@android:drawable/ic_input_add"
-                app:tint="@color/white"
-                android:backgroundTint="@color/white"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_heart"
+                app:tint="@color/item_red_bg"
+                android:backgroundTint="@color/rv_text_color"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="Добавить данные" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:contentDescription="@string/add_data" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
-            android:id="@+id/includedBottomSheetLayoutCompanyServices"
+            android:id="@+id/includedBottomSheetLayout"
             layout="@layout/bottom_sheet_layout" />
 
         <include

@@ -65,7 +65,4 @@ abstract class BaseFragment<Binding: ViewBinding> : Fragment(){
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }
